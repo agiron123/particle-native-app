@@ -22,18 +22,14 @@ export default class App extends React.Component {
 
   componentDidMount() {
     // Log into the particle Service.
-    // Access token: d4896bb622e6f834893705dcd817f7c477fd3884
-
     // Going to need the device id and the event prefix.
+    // Here's how we would use Curl to get an event stream from a particle device. 
     //curl "https://api.particle.io/v1/devices/290045000c47363330353437/events?access_token=d4896bb622e6f834893705dcd817f7c477fd3884"
+    // Future Work: Be able to add multiple devices and store device settings.
 
-    console.log("Connecting to websocket");
     let eventSource = new RNEventSource("https://api.particle.io/v1/devices/290045000c47363330353437/events?access_token=d4896bb622e6f834893705dcd817f7c477fd3884");
     eventSource.addEventListener('humidity', (data) => {
       let parsed = JSON.parse(data.data);
-      console.log("Humidity data Parsed: ", parsed.data);
-      console.log("Published_at: ", parsed["published_at"]);
-
       this.setState({
         humidity: parsed.data,
         humidityLastUpdated: parsed["published_at"]
@@ -42,9 +38,6 @@ export default class App extends React.Component {
 
     eventSource.addEventListener('PH', (data) => {
       let parsed = JSON.parse(data.data);
-      console.log("PH Data Parsed: ", parsed.data);
-      console.log("Published_at: ", parsed["published_at"]);
-
       this.setState({
         ph: parsed.data,
         phLastUpdated: parsed["published_at"]
@@ -53,9 +46,6 @@ export default class App extends React.Component {
 
     eventSource.addEventListener('Soil Moisture', (data) => {
       let parsed = JSON.parse(data.data);
-      console.log("Soil Moisture Parsed: ", parsed.data);
-      console.log("Published_at: ", parsed["published_at"]);
-
       this.setState({
         soilMoisture: parsed.data,
         soilMoistureLastUpdated: parsed["published_at"]
@@ -64,9 +54,6 @@ export default class App extends React.Component {
 
     eventSource.addEventListener('temperature', (data) => {
       let parsed = JSON.parse(data.data);
-      console.log("Temperature Parsed: ", parsed.data);
-      console.log("Published_at: ", parsed["published_at"]);
-
       this.setState({
         temperature: parsed.data,
         temperatureLastUpdated: parsed["published_at"]
@@ -96,9 +83,7 @@ export default class App extends React.Component {
         <Text>PH:</Text>
         <Text>{ this.state.ph }</Text>
         <Text>Last Updated:</Text>
-        <Text>{ this.state.phLastUpdated }</Text>
-        
-        <Text></Text>
+        <Text>{ this.state.phLastUpdated }</Text>        
       </View>
     );
   }
